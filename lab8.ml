@@ -231,15 +231,15 @@ by registering appropriate listeners, one for each news network,
 waiting for the publish event.
 ......................................................................*)
 
-let receive_report (s : string) : unit = 
-   ;;
+let receive_report (str : string) : unit = 
+  let _ = WEvent.add_listener publish (fun () -> buzzFake str) in () ;;
 
 (*......................................................................
 Exercise 10: Register the receieve_report listener to listen for the
 newswire event.
 ......................................................................*)
 
-(* .. *)
+let _ = WEvent.add_listener newswire receive_report ;;
 
 (* Here are some new headlines to use for testing this part. *)
 
@@ -254,7 +254,9 @@ the news. (They've just queued up a bunch of listeners on the publish
 event instead.)
 ......................................................................*)
 
-(* .. *)
+let _ = WEvent.fire_event newswire h4 ;;
+let _ = WEvent.fire_event newswire h5 ;; 
+let _ = WEvent.fire_event newswire h6 ;;
 
 print_string "Moved to publication.\n" ;;
 
@@ -264,4 +266,4 @@ out the headlines. You should see the headlines printed after
 the line above. 
 ......................................................................*)
 
-(* .. *)
+let _ = WEvent.fire_event publish () ;;
